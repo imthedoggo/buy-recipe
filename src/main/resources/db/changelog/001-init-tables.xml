@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="001-create-tables" author="Avgustina Shevchuk">
+        <!-- recipes table -->
+        <createTable tableName="recipes">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="tags" type="jsonb"/>
+        </createTable>
+
+        <!-- products table -->
+        <createTable tableName="products">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_in_cents" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tags" type="jsonb"/>
+        </createTable>
+
+        <!-- recipes_products join table -->
+        <createTable tableName="recipes_products">
+            <column name="recipe_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="recipes_products" columnNames="recipe_id,product_id" constraintName="pk_recipes_products"/>
+        <addForeignKeyConstraint baseTableName="recipes_products" baseColumnNames="recipe_id"
+                                referencedTableName="recipes" referencedColumnNames="id"
+                                constraintName="fk_recipes_products_recipe"/>
+        <addForeignKeyConstraint baseTableName="recipes_products" baseColumnNames="product_id"
+                                referencedTableName="products" referencedColumnNames="id"
+                                constraintName="fk_recipes_products_product"/>
+
+        <!-- carts table -->
+        <createTable tableName="carts">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="total_in_cents" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- cart_items table -->
+        <createTable tableName="cart_items">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cart_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="cart_items" baseColumnNames="cart_id"
+                                referencedTableName="carts" referencedColumnNames="id"
+                                constraintName="fk_cart_items_cart"/>
+        <addForeignKeyConstraint baseTableName="cart_items" baseColumnNames="product_id"
+                                referencedTableName="products" referencedColumnNames="id"
+                                constraintName="fk_cart_items_product"/>
+    </changeSet>
+</databaseChangeLog> 
