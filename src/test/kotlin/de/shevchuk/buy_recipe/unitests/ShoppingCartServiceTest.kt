@@ -10,8 +10,9 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlinx.coroutines.runBlocking
-import org.mockito.ArgumentMatchers.any
+import org.mockito.kotlin.any
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.whenever
 
 class ShoppingCartServiceTest {
     private lateinit var cartRepository: ShoppingCartRepository
@@ -22,7 +23,7 @@ class ShoppingCartServiceTest {
 
     @BeforeEach
     fun setUp() {
-        cartRepository = mock()
+        cartRepository = mock(ShoppingCartRepository::class.java)
         cartItemRepository = mock()
         productRepository = mock()
         recipeService = mock()
