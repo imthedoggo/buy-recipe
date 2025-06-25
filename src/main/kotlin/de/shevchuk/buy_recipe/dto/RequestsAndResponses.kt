@@ -8,23 +8,23 @@ data class RecipeListResponse(
 )
 
 data class RecipeSummary(
-    val id: Int,
+    val id: Long,
     val name: String,
-    val tags: List<String>,
+    val tags: List<Tag>,
     val ingredientCount: Int,
     val estimatedCostInCents: Int
 )
 
 data class RecipeDetailResponse(
-    val id: Int,
+    val id: Long,
     val name: String,
-    val tags: List<String>,
+    val tags: List<Tag>,
     val ingredients: List<RecipeIngredientDetail>,
     val totalCostInCents: Int
 )
 
 data class RecipeIngredientDetail(
-    val productId: Int,
+    val productId: Long,
     val productName: String,
     val quantity: Int,
     val priceInCents: Int,
@@ -32,9 +32,9 @@ data class RecipeIngredientDetail(
 )
 
 data class AddRecipeToCartRequest(
-    val recipeId: Int,
-    val cartId: Int,
-    val includeIngredients: List<Int>? = null // Optional: specific product IDs to include
+    val recipeId: Long,
+    val cartId: Long,
+    val includeIngredients: List<Long>? = null // Optional: specific product IDs to include
 )
 
 data class AddRecipeToCartResponse(
@@ -45,8 +45,48 @@ data class AddRecipeToCartResponse(
 )
 
 data class CartItemAdded(
-    val productId: Int,
+    val productId: Long,
     val productName: String,
     val quantityAdded: Int,
     val isNewItem: Boolean // true if new item, false if quantity was updated
+)
+
+data class RemoveRecipeFromCartRequest(
+    val recipeId: Long,
+    val cartId: Long,
+    val removeIngredients: List<Long>? = null // Optional: specific product IDs to remove
+)
+
+data class RemoveRecipeFromCartResponse(
+    val success: Boolean,
+    val removedItems: List<CartItemRemoved>,
+    val updatedCartTotal: Int,
+    val message: String
+)
+
+data class CartItemRemoved(
+    val productId: Long,
+    val productName: String,
+    val quantityRemoved: Int,
+    val remainingQuantity: Int,
+    val itemCompletelyRemoved: Boolean // true if item was completely removed from cart
+)
+
+data class CreateRecipeRequest(
+    val name: String,
+    val tags: List<Tag>,
+    val ingredients: List<CreateRecipeIngredient>
+)
+
+data class CreateRecipeIngredient(
+    val productId: Long,
+    val quantity: Int
+)
+
+data class CreateRecipeResponse(
+    val success: Boolean,
+    val recipeId: Long?,
+    val recipe: RecipeDetailResponse?,
+    val message: String,
+    val errors: List<String> = emptyList()
 )

@@ -3,7 +3,7 @@ package de.shevchuk.buy_recipe.dto
 data class Recipe(
     val id: Long,
     val name: String,
-    val tags: List<Tag>,
+    val tags: List<Tag> = emptyList(),
     val ingredients: List<RecipeIngredient> = emptyList()
 )
 

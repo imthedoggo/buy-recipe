@@ -1,9 +1,6 @@
 package de.shevchuk.buy_recipe.controller
 
-import de.shevchuk.buy_recipe.*
-import de.shevchuk.buy_recipe.dto.AddRecipeToCartRequest
-import de.shevchuk.buy_recipe.dto.AddRecipeToCartResponse
-import de.shevchuk.buy_recipe.dto.ShoppingCart
+import de.shevchuk.buy_recipe.dto.*
 import de.shevchuk.buy_recipe.service.ShoppingCartService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

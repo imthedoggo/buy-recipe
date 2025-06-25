@@ -1,9 +1,12 @@
 package de.shevchuk.buy_recipe.controller
 
 import de.shevchuk.buy_recipe.*
+import de.shevchuk.buy_recipe.dto.CreateRecipeRequest
+import de.shevchuk.buy_recipe.dto.CreateRecipeResponse
 import de.shevchuk.buy_recipe.dto.RecipeDetailResponse
 import de.shevchuk.buy_recipe.dto.RecipeListResponse
 import de.shevchuk.buy_recipe.service.RecipeService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -12,7 +15,6 @@ import org.springframework.web.bind.annotation.*
 class RecipeController(
     private val recipeService: RecipeService,
 ) {
-
     @GetMapping("/{id}")
     suspend fun getRecipe(@PathVariable id: Long): ResponseEntity<RecipeDetailResponse> {
         val recipe = recipeService.getRecipeDetail(id)
@@ -32,6 +34,10 @@ class RecipeController(
         return recipeService.getRecipes(page, pageSize, tags)
     }
 
-    @PostMapping("/{id}/create")
-    suspend fun createRecipe(): ResponseEntity<AddToCartResponse> {}
+    @PostMapping
+    suspend fun createRecipe(@RequestBody request: CreateRecipeRequest): ResponseEntity<CreateRecipeResponse> {
+        val response = recipeService.createRecipe(request)
+        val status = if (response.success) HttpStatus.CREATED else HttpStatus.BAD_REQUEST
+        return ResponseEntity(response, status)
+    }
 }
