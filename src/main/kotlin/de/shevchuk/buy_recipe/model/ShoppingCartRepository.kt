@@ -9,11 +9,6 @@ import org.springframework.stereotype.Service
 @Repository
 interface CartJpaRepository : JpaRepository<CartEntity, Long>
 
-@Repository
-interface CartItemJpaRepository : JpaRepository<CartItemEntity, Long> {
-    fun findByCartId(cartId: Long): List<CartItemEntity>
-}
-
 @Service
 open class ShoppingCartRepository(
     private val cartJpaRepository: CartJpaRepository,
