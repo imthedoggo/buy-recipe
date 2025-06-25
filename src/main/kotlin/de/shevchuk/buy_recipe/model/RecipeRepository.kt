@@ -20,7 +20,7 @@ interface RecipeProductJpaRepository : JpaRepository<RecipeProductEntity, Recipe
 }
 
 @Service
-class RecipeRepository(
+open class RecipeRepository(
     private val recipeJpaRepository: RecipeJpaRepository,
     private val recipeProductJpaRepository: RecipeProductJpaRepository,
     private val productRepository: ProductRepository
@@ -82,6 +82,28 @@ class RecipeRepository(
             tags = tags,
             ingredients = ingredients
         )
+    }
+
+    suspend fun addRecipe(request: CreateRecipeRequest): Recipe {
+        // Save the recipe entity first (id will be generated)
+        val recipeEntity = RecipeEntity(
+            name = request.name,
+            tags = request.tags.map { it.name }
+        )
+        val savedRecipe = recipeJpaRepository.save(recipeEntity)
+
+        // Save ingredients in the join table
+        request.ingredients.forEach { ingredient ->
+            val recipeProduct = RecipeProductEntity(
+                recipeId = savedRecipe.id,
+                productId = ingredient.productId,
+                quantity = ingredient.quantity
+            )
+            recipeProductJpaRepository.save(recipeProduct)
+        }
+
+        // Return the full recipe with ingredients
+        return toRecipe(savedRecipe, withIngredients = true)
     }
 }
 

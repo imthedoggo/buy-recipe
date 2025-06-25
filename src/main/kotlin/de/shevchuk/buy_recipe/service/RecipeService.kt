@@ -120,17 +120,9 @@ class RecipeService(
         }
 
         try {
-            // Create recipe
-            val recipe = recipeRepository.save(Recipe(id = 1, request.name, request.tags, listOf() )) //request.ingredients
-
-            // Add ingredients
-//            request.ingredients.forEach { ingredient ->
-//                recipeProductRepository.create(recipe.id, ingredient.productId, ingredient.quantity)
-//            }
-
-            // Return created recipe with details
+            // Create recipe and ingredients in one step
+            val recipe = recipeRepository.addRecipe(request)
             val recipeDetail = getRecipeDetail(recipe.id)
-
             return CreateRecipeResponse(
                 success = true,
                 recipeId = recipe.id,

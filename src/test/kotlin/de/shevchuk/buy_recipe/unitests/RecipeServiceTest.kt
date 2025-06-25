@@ -17,7 +17,7 @@ class RecipeServiceTest {
 
     @BeforeEach
     fun setUp() {
-        recipeRepository = mock()
+        recipeRepository = mock(RecipeRepository::class.java)
         productRepository = mock()
         recipeService = RecipeService(recipeRepository, productRepository)
     }
@@ -68,5 +68,34 @@ class RecipeServiceTest {
         val result = recipeService.createRecipe(request)
         assertFalse(result.success)
         assertTrue(result.errors.any { it.contains("already exists") })
+    }
+
+    @Test
+    fun `createRecipe returns success for valid request`(): Unit = runBlocking {
+        val request = CreateRecipeRequest("Test", listOf(Tag.VEGAN), listOf(CreateRecipeIngredient(1, 2)))
+        val product = Product(1, "Apple", 100, listOf(Tag.VEGAN))
+        val ingredient = RecipeIngredient(product, 2)
+        val recipe = Recipe(1, "Test", listOf(Tag.VEGAN), listOf(ingredient))
+        val recipeDetail = RecipeDetailResponse(
+            id = 1,
+            name = "Test",
+            tags = listOf(Tag.VEGAN),
+            ingredients = listOf(RecipeIngredientDetail(1, "Apple", 2, 100, 200)),
+            totalCostInCents = 200
+        )
+
+        runBlocking {
+            whenever(recipeRepository.existsByName("Test")).thenReturn(false)
+            whenever(productRepository.findByIds(any())).thenReturn(listOf(product))
+            whenever(recipeRepository.addRecipe(request)).thenReturn(recipe)
+            whenever(recipeRepository.findByIdWithIngredients(1)).thenReturn(recipe)
+        }
+
+        val result = recipeService.createRecipe(request)
+        assertTrue(result.success)
+        assertEquals(1, result.recipeId)
+        assertEquals("Test", result.recipe?.name)
+        assertEquals(1, result.recipe?.ingredients?.size)
+        assertEquals(200, result.recipe?.totalCostInCents)
     }
 } 
