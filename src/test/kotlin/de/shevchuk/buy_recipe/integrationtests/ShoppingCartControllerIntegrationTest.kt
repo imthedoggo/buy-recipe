@@ -5,16 +5,23 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ShoppingCartControllerIntegrationTest(@Autowired val webTestClient: WebTestClient) {
+@AutoConfigureMockMvc
+class ShoppingCartControllerIntegrationTest(
+    @Autowired val mockMvc: MockMvc,
+    @Autowired val objectMapper: ObjectMapper
+) {
 
     @Test
     fun `get cart not found`() {
-        webTestClient.get().uri("/api/carts/999999")
-            .exchange()
-            .expectStatus().isNotFound
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/carts/999999"))
+            .andExpect(MockMvcResultMatchers.status().isNotFound)
     }
 
     @Test
@@ -28,21 +35,20 @@ class ShoppingCartControllerIntegrationTest(@Autowired val webTestClient: WebTes
             cartId = cartId,
             includeIngredients = null
         )
-        webTestClient.post().uri("/api/carts/$cartId/add-recipe")
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(addRequest)
-            .exchange()
-            .expectStatus().isOk
-            .expectBody()
-            .jsonPath("$.success").isEqualTo(true)
-            .jsonPath("$.addedItems").isArray
+        val addRequestJson = objectMapper.writeValueAsString(addRequest)
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/carts/$cartId/add-recipe")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(addRequestJson)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.addedItems").isArray)
 
         // Remove recipe from cart
-        webTestClient.delete().uri("/api/carts/delete-recipe")
-            .exchange()
-            .expectStatus().isOk
-            .expectBody()
-            .jsonPath("$.success").isEqualTo(true)
-            .jsonPath("$.removedItems").isArray
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/carts/delete-recipe"))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.removedItems").isArray)
     }
 } 
