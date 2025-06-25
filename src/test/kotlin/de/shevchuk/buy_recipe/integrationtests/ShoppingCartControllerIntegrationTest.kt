@@ -1,7 +1,6 @@
-package de.shevchuk.buy_recipe
+package de.shevchuk.buy_recipe.integrationtests
 
 import de.shevchuk.buy_recipe.dto.AddRecipeToCartRequest
-import de.shevchuk.buy_recipe.dto.RemoveRecipeFromCartRequest
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -39,11 +38,6 @@ class ShoppingCartControllerIntegrationTest(@Autowired val webTestClient: WebTes
             .jsonPath("$.addedItems").isArray
 
         // Remove recipe from cart
-//        val removeRequest = RemoveRecipeFromCartRequest(
-//            recipeId = recipeId,
-//            cartId = cartId,
-//            removeIngredients = null
-//        )
         webTestClient.delete().uri("/api/carts/delete-recipe")
             .exchange()
             .expectStatus().isOk
