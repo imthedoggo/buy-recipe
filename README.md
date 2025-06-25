@@ -1,23 +1,24 @@
 # Read me first: buy-recipe
-The goal of this project is to manage superheroes and their attributes:
-create and fetch superheroes and create new attributes (e.g new powers...).
 
+The goal of this project is to add recipes to a shopping cart.
+The project is intended to be:
 * Designed simply yet flexible and extendable
 * Clean
 * Well-documented and well-tested
 
 ## Tech stack:
 * Kotlin
-* Spring 3
-* RESTful endpoints 
-* Docker to build image & run the project from anywhere
+* Spring boot 3.5
+* RESTful endpoints
 * Docker-compose to start the DB
+* Docker to build image & run the project from anywhere
 * Postgres as a relational DB
 * Liquibase DB migration tool to set up tables
 
 ### Assumptions:
 * All the products are always available
 * Anyone can manipulate any cart - no user management expected
+* Simplistic look on product quantities / measures
 
 ### Functional requirements:
 * get shopping cart content
@@ -75,14 +76,14 @@ docker run -p 8081:8080 -d imthedoggo/buy-recipe
 
 ### Endpoints:
 
-| Method  | Resource                        | Description                        |
-|---------|----------------------------------|------------------------------------|
-| GET     | /api/recipes                    | List recipes (with pagination)     |
-| GET     | /api/recipes/{id}               | Get recipe details by ID           |
-| POST    | /api/recipes                    | Create a new recipe                |
-| GET     | /api/carts/{id}                 | Get cart by ID                     |
-| POST    | /api/carts/{id}/add-recipe      | Add a recipe to cart               |
-| DELETE  | /api/carts/delete-recipe        | Delete recipe from cart            |
+| Method  | Resource                        | Description                    |
+|---------|---------------------------------|--------------------------------|
+| GET     | /api/recipes                    | List recipes (with pagination) |
+| GET     | /api/recipes/{id}               | Get recipe details by ID       |
+| POST    | /api/recipes                    | Create a new recipe            |
+| GET     | /api/carts/{id}                 | Get cart by ID                 |
+| POST    | /api/carts/{id}/add-recipe      | Add a recipe to cart           |
+| DELETE  | /api/carts/delete-recipe        | Delete recipe from cart        |
 
 ### Examples
 
