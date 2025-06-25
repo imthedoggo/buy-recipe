@@ -32,6 +32,7 @@ An API layer that supports:
 * view ingredients and costs
 * add recipes to cart
 * create new recipes
+* A list of products and recipe_products is migrated onto the DB for testing purposes.
 
 ![model_relationships.png](model_relationships.png)
 
@@ -85,31 +86,34 @@ docker run -p 8081:8080 -d imthedoggo/buy-recipe
 | POST    | /api/carts/{id}/add-recipe      | Add a recipe to cart           |
 | DELETE  | /api/carts/delete-recipe        | Delete recipe from cart        |
 
+#### Disclaimer
+A Liquibase migration file was added to the project in order to insert an initial list of products and recipes_products.
+This is not ideal, in real life should be exposed as an endpoint, uploaded as a CSV or any other way.
+This is purely for testing convenience and simplicity.
+
 ### Examples
 
 #### GET /api/recipes?page=0&pageSize=2
 Response:
 ```
 {
-  "recipes": [
-    {
-      "id": 1,
-      "name": "Vegan Salad",
-      "tags": ["VEGAN"],
-      "ingredientCount": 2,
-      "estimatedCostInCents": 500
-    },
-    {
-      "id": 2,
-      "name": "Keto Omelette",
-      "tags": ["KETO"],
-      "ingredientCount": 3,
-      "estimatedCostInCents": 800
-    }
-  ],
-  "totalCount": 2,
-  "page": 0,
-  "pageSize": 2
+	"recipes": [
+		{
+			"id": 1,
+			"name": "Grilled Chicken with Vegetables",
+			"ingredientCount": 5,
+			"estimatedCostInCents": 2613
+		},
+		{
+			"id": 2,
+			"name": "Beef Pasta Bolognese",
+			"ingredientCount": 6,
+			"estimatedCostInCents": 2879
+		}
+	],
+	"totalCount": 5,
+	"page": 0,
+	"pageSize": 2
 }
 ```
 
@@ -117,26 +121,46 @@ Response:
 Response:
 ```
 {
-  "id": 1,
-  "name": "Vegan Salad",
-  "tags": ["VEGAN"],
-  "ingredients": [
-    {
-      "productId": 1,
-      "productName": "Lettuce",
-      "quantity": 1,
-      "priceInCents": 200,
-      "totalPriceInCents": 200
-    },
-    {
-      "productId": 2,
-      "productName": "Tomato",
-      "quantity": 2,
-      "priceInCents": 150,
-      "totalPriceInCents": 300
-    }
-  ],
-  "totalCostInCents": 500
+	"id": 1,
+	"name": "Grilled Chicken with Vegetables",
+	"ingredients": [
+		{
+			"productId": 1,
+			"productName": "Chicken Breast",
+			"quantity": 2,
+			"priceInCents": 599,
+			"totalPriceInCents": 1198
+		},
+		{
+			"productId": 13,
+			"productName": "Bell Peppers",
+			"quantity": 2,
+			"priceInCents": 159,
+			"totalPriceInCents": 318
+		},
+		{
+			"productId": 16,
+			"productName": "Olive Oil",
+			"quantity": 1,
+			"priceInCents": 799,
+			"totalPriceInCents": 799
+		},
+		{
+			"productId": 17,
+			"productName": "Salt",
+			"quantity": 1,
+			"priceInCents": 99,
+			"totalPriceInCents": 99
+		},
+		{
+			"productId": 18,
+			"productName": "Black Pepper",
+			"quantity": 1,
+			"priceInCents": 199,
+			"totalPriceInCents": 199
+		}
+	],
+	"totalCostInCents": 2613
 }
 ```
 
@@ -145,7 +169,6 @@ Request:
 ```
 {
   "name": "Vegan Salad",
-  "tags": ["VEGAN"],
   "ingredients": [
     { "productId": 1, "quantity": 1 },
     { "productId": 2, "quantity": 2 }
@@ -155,44 +178,57 @@ Request:
 Response (success):
 ```
 {
-  "success": true,
-  "recipeId": 1,
-  "recipe": {
-    "id": 1,
-    "name": "Vegan Salad",
-    "tags": ["VEGAN"],
-    "ingredients": [
-      {
-        "productId": 1,
-        "productName": "Lettuce",
-        "quantity": 1,
-        "priceInCents": 200,
-        "totalPriceInCents": 200
-      },
-      {
-        "productId": 2,
-        "productName": "Tomato",
-        "quantity": 2,
-        "priceInCents": 150,
-        "totalPriceInCents": 300
-      }
-    ],
-    "totalCostInCents": 500
-  },
-  "message": "Recipe created successfully",
-  "errors": []
+	"success": true,
+	"recipeId": 6,
+	"recipe": {
+		"id": 6,
+		"name": "Vegan Salad",
+		"ingredients": [
+			{
+				"productId": 1,
+				"productName": "Chicken Breast",
+				"quantity": 1,
+				"priceInCents": 599,
+				"totalPriceInCents": 599
+			},
+			{
+				"productId": 2,
+				"productName": "Ground Beef",
+				"quantity": 2,
+				"priceInCents": 899,
+				"totalPriceInCents": 1798
+			}
+		],
+		"totalCostInCents": 2397
+	},
+	"message": "Recipe created successfully",
+	"errors": []
 }
 ```
 Response (validation error):
 ```
 {
-  "success": false,
-  "recipeId": null,
-  "recipe": null,
-  "message": "Validation failed",
-  "errors": ["Recipe name cannot be empty"]
+	"success": false,
+	"recipeId": null,
+	"recipe": null,
+	"message": "Validation failed",
+	"errors": [
+		"Recipe name cannot be empty"
+	]
 }
 ```
+```
+{
+	"success": false,
+	"recipeId": null,
+	"recipe": null,
+	"message": "Validation failed",
+	"errors": [
+		"Recipe with this name already exists"
+	]
+}
+```
+
 
 #### GET /api/carts/1
 Response:
@@ -257,6 +293,15 @@ Response:
   ],
   "updatedCartTotal": 500,
   "message": "Recipe added to cart"
+}
+```
+Response (cart not found):
+```
+{
+	"success": false,
+	"addedItems": [],
+	"updatedCartTotal": 0,
+	"message": "Cart not found"
 }
 ```
 
