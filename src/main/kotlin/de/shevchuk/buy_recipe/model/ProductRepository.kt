@@ -16,11 +16,11 @@ interface ProductJpaRepository : JpaRepository<ProductEntity, Long> {
 open class ProductRepository(
     private val productJpaRepository: ProductJpaRepository
 ) {
-    suspend fun findByIds(ids: List<Long>): List<Product> {
+    fun findByIds(ids: List<Long>): List<Product> {
         return productJpaRepository.findByIdIn(ids).map { toProduct(it) }
     }
 
-    suspend fun findById(id: Long): Product? {
+    fun findById(id: Long): Product? {
         return productJpaRepository.findById(id).orElse(null)?.let { toProduct(it) }
     }
 

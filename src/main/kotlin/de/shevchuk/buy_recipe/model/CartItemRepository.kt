@@ -17,12 +17,12 @@ open class CartItemRepository(
     private val cartItemJpaRepository: CartItemJpaRepository,
     private val productRepository: ProductRepository
 ) {
-    suspend fun findByCartIdAndProductId(cartId: Long, productId: Long): CartItem? {
+    fun findByCartIdAndProductId(cartId: Long, productId: Long): CartItem? {
         val entity = cartItemJpaRepository.findByCartIdAndProductId(cartId, productId) ?: return null
         return toCartItem(entity)
     }
 
-    suspend fun create(cartId: Long, productId: Long, quantity: Int): CartItem {
+    fun create(cartId: Long, productId: Long, quantity: Int): CartItem {
         val entity = CartItemEntity(
             cartId = cartId,
             productId = productId,
@@ -32,21 +32,21 @@ open class CartItemRepository(
         return toCartItem(saved)
     }
 
-    suspend fun updateQuantity(id: Long, quantity: Int) {
+    fun updateQuantity(id: Long, quantity: Int) {
         val entity = cartItemJpaRepository.findById(id).orElse(null) ?: return
         val updated = entity.copy(quantity = quantity)
         cartItemJpaRepository.save(updated)
     }
 
-    suspend fun findByCartId(cartId: Long): List<CartItem> {
+    fun findByCartId(cartId: Long): List<CartItem> {
         return cartItemJpaRepository.findByCartId(cartId).map { toCartItem(it) }
     }
 
-    suspend fun deleteById(itemId: Long) {
+    fun deleteById(itemId: Long) {
         cartItemJpaRepository.deleteById(itemId)
     }
 
-    private suspend fun toCartItem(entity: CartItemEntity): CartItem {
+    private fun toCartItem(entity: CartItemEntity): CartItem {
         val product = productRepository.findById(entity.productId)
         return CartItem(
             id = entity.id,

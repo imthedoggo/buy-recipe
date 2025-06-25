@@ -24,13 +24,13 @@ open class RecipeRepository(
     private val productRepository: ProductRepository
 ) {
     // GET recipe by id
-    suspend fun findById(id: Long): Recipe? {
+    fun findById(id: Long): Recipe? {
         val entity = recipeJpaRepository.findById(id).orElse(null) ?: return null
         return toRecipe(entity)
     }
 
     // GET all recipes with pagination and optional tags filter
-    suspend fun findAll(page: Int, size: Int, tags: List<String>? = null): List<Recipe> {
+    fun findAll(page: Int, size: Int, tags: List<String>? = null): List<Recipe> {
         val pageRequest = PageRequest.of(page, size)
         val entities = if (tags.isNullOrEmpty()) {
             recipeJpaRepository.findAll(pageRequest).content
@@ -42,14 +42,14 @@ open class RecipeRepository(
         return entities.map { toRecipe(it) }
     }
 
-    suspend fun findByIdWithIngredients(id: Long): Recipe? {
+    fun findByIdWithIngredients(id: Long): Recipe? {
         val entity = recipeJpaRepository.findById(id).orElse(null) ?: return null
         return toRecipe(entity, withIngredients = true)
     }
 
-    suspend fun existsByName(name: String): Boolean = recipeJpaRepository.existsByNameIgnoreCase(name)
+    fun existsByName(name: String): Boolean = recipeJpaRepository.existsByNameIgnoreCase(name)
 
-    suspend fun save(recipe: Recipe): Recipe {
+    fun save(recipe: Recipe): Recipe {
         val entity = RecipeEntity(
             id = recipe.id,
             name = recipe.name,
@@ -60,10 +60,10 @@ open class RecipeRepository(
         return toRecipe(saved, withIngredients = true)
     }
 
-    suspend fun countAll(): Int = recipeJpaRepository.count().toInt()
+    fun countAll(): Int = recipeJpaRepository.count().toInt()
 
     // Helper to map RecipeEntity to Recipe DTO
-    private suspend fun toRecipe(entity: RecipeEntity, withIngredients: Boolean = false): Recipe {
+    private fun toRecipe(entity: RecipeEntity, withIngredients: Boolean = false): Recipe {
         val tags = entity.tags.mapNotNull { tagStr ->
             try { Tag.valueOf(tagStr) } catch (_: Exception) { null }
         }
@@ -82,7 +82,7 @@ open class RecipeRepository(
         )
     }
 
-    suspend fun addRecipe(request: CreateRecipeRequest): Recipe {
+    fun addRecipe(request: CreateRecipeRequest): Recipe {
         // Save the recipe entity first (id will be generated)
         val recipeEntity = RecipeEntity(
             name = request.name,

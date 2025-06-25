@@ -9,7 +9,6 @@ import de.shevchuk.buy_recipe.service.ShoppingCartService
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import kotlinx.coroutines.runBlocking
 import org.mockito.kotlin.any
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
@@ -31,7 +30,7 @@ class ShoppingCartServiceTest {
     }
 
     @Test
-    fun `addRecipeToCart returns error if recipe not found`() = runBlocking {
+    fun `addRecipeToCart returns error if recipe not found`() {
         whenever(recipeService.getRecipeDetail(any())).thenReturn(null)
         val request = AddRecipeToCartRequest(1, 1)
         val result = shoppingCartService.addRecipeToCart(request)
@@ -40,7 +39,7 @@ class ShoppingCartServiceTest {
     }
 
     @Test
-    fun `addRecipeToCart returns error if cart not found`() = runBlocking {
+    fun `addRecipeToCart returns error if cart not found`() {
         val recipeDetail = RecipeDetailResponse(1, "Test", emptyList(), emptyList(), 0)
         whenever(recipeService.getRecipeDetail(any())).thenReturn(recipeDetail)
         whenever(cartRepository.findById(any())).thenReturn(null)
@@ -51,7 +50,7 @@ class ShoppingCartServiceTest {
     }
 
     @Test
-    fun `getCart returns cart if found`() = runBlocking {
+    fun `getCart returns cart if found`() {
         val cart = ShoppingCart(1, 100)
         whenever(cartRepository.findByIdWithItems(1)).thenReturn(cart)
         val result = shoppingCartService.getCart(1)
@@ -60,7 +59,7 @@ class ShoppingCartServiceTest {
     }
 
     @Test
-    fun `removeRecipeFromCart returns error if recipe not found`() = runBlocking {
+    fun `removeRecipeFromCart returns error if recipe not found`() {
         whenever(recipeService.getRecipeDetail(any())).thenReturn(null)
         val request = RemoveRecipeFromCartRequest(1, 1)
         val result = shoppingCartService.removeRecipeFromCart(request)
@@ -69,7 +68,7 @@ class ShoppingCartServiceTest {
     }
 
     @Test
-    fun `removeRecipeFromCart returns error if cart not found`() = runBlocking {
+    fun `removeRecipeFromCart returns error if cart not found`() {
         val recipeDetail = RecipeDetailResponse(1, "Test", emptyList(), emptyList(), 0)
         whenever(recipeService.getRecipeDetail(any())).thenReturn(recipeDetail)
         whenever(cartRepository.findById(any())).thenReturn(null)

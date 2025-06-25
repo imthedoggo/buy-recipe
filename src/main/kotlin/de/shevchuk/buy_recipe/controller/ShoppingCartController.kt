@@ -11,7 +11,7 @@ class ShoppingCartController(
     private val cartService: ShoppingCartService
 ) {
     @GetMapping("/{id}")
-    suspend fun getCart(@PathVariable id: Long): ResponseEntity<ShoppingCart> {
+    fun getCart(@PathVariable id: Long): ResponseEntity<ShoppingCart> {
         val cart = cartService.getCart(id)
         return if (cart != null) {
             ResponseEntity.ok(cart)
@@ -21,13 +21,12 @@ class ShoppingCartController(
     }
 
     @PostMapping("/{id}/add-recipe")
-    suspend fun addRecipeToCart(@RequestBody request: AddRecipeToCartRequest): AddRecipeToCartResponse {
+    fun addRecipeToCart(@RequestBody request: AddRecipeToCartRequest): AddRecipeToCartResponse {
         return cartService.addRecipeToCart(request)
     }
 
-
     @DeleteMapping("/delete-recipe")
-    suspend fun deleteRecipeFromCart(@RequestBody request: RemoveRecipeFromCartRequest): RemoveRecipeFromCartResponse {
+    fun deleteRecipeFromCart(@RequestBody request: RemoveRecipeFromCartRequest): RemoveRecipeFromCartResponse {
         return cartService.removeRecipeFromCart(request)
     }
 }

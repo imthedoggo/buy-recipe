@@ -1,6 +1,5 @@
 package de.shevchuk.buy_recipe.controller
 
-import de.shevchuk.buy_recipe.*
 import de.shevchuk.buy_recipe.dto.CreateRecipeRequest
 import de.shevchuk.buy_recipe.dto.CreateRecipeResponse
 import de.shevchuk.buy_recipe.dto.RecipeDetailResponse
@@ -16,7 +15,7 @@ class RecipeController(
     private val recipeService: RecipeService,
 ) {
     @GetMapping("/{id}")
-    suspend fun getRecipe(@PathVariable id: Long): ResponseEntity<RecipeDetailResponse> {
+    fun getRecipe(@PathVariable id: Long): ResponseEntity<RecipeDetailResponse> {
         val recipe = recipeService.getRecipeDetail(id)
         return if (recipe != null) {
             ResponseEntity.ok(recipe)
@@ -26,7 +25,7 @@ class RecipeController(
     }
 
     @GetMapping
-    suspend fun getRecipes(
+    fun getRecipes(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") pageSize: Int,
         @RequestParam(required = false) tags: List<String>?,
@@ -35,7 +34,7 @@ class RecipeController(
     }
 
     @PostMapping
-    suspend fun createRecipe(@RequestBody request: CreateRecipeRequest): ResponseEntity<CreateRecipeResponse> {
+    fun createRecipe(@RequestBody request: CreateRecipeRequest): ResponseEntity<CreateRecipeResponse> {
         val response = recipeService.createRecipe(request)
         val status = if (response.success) HttpStatus.CREATED else HttpStatus.BAD_REQUEST
         return ResponseEntity(response, status)

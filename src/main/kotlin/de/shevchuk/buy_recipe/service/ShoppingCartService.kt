@@ -13,7 +13,7 @@ class ShoppingCartService(
     private val productRepository: ProductRepository,
     private val recipeService: RecipeService
 ) {
-    suspend fun addRecipeToCart(request: AddRecipeToCartRequest): AddRecipeToCartResponse {
+    fun addRecipeToCart(request: AddRecipeToCartRequest): AddRecipeToCartResponse {
         val recipe = recipeService.getRecipeDetail(request.recipeId)
             ?: return AddRecipeToCartResponse(
                 success = false,
@@ -87,7 +87,7 @@ class ShoppingCartService(
         )
     }
 
-    suspend fun removeRecipeFromCart(request: RemoveRecipeFromCartRequest): RemoveRecipeFromCartResponse {
+    fun removeRecipeFromCart(request: RemoveRecipeFromCartRequest): RemoveRecipeFromCartResponse {
         val recipe = recipeService.getRecipeDetail(request.recipeId)
             ?: return RemoveRecipeFromCartResponse(
                 success = false,
@@ -168,7 +168,7 @@ class ShoppingCartService(
         )
     }
 
-    suspend fun getCart(cartId: Long): ShoppingCart? {
+    fun getCart(cartId: Long): ShoppingCart? {
         return cartRepository.findByIdWithItems(cartId)
     }
 }

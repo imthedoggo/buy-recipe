@@ -10,7 +10,7 @@ class RecipeService(
     private val recipeRepository: RecipeRepository,
     private val productRepository: ProductRepository
 ) {
-    suspend fun getRecipes(
+    fun getRecipes(
         page: Int = 0,
         pageSize: Int = 20,
         tags: List<String>? = null
@@ -37,7 +37,7 @@ class RecipeService(
         )
     }
 
-    suspend fun getRecipeDetail(id: Long): RecipeDetailResponse? {
+    fun getRecipeDetail(id: Long): RecipeDetailResponse? {
         val recipe = recipeRepository.findByIdWithIngredients(id) ?: return null
 
         val ingredientDetails = recipe.ingredients.map { ingredient ->
@@ -59,12 +59,12 @@ class RecipeService(
         )
     }
 
-    private suspend fun getRecipeIngredients(recipeId: Long): List<RecipeIngredient> {
+    private fun getRecipeIngredients(recipeId: Long): List<RecipeIngredient> {
         val recipe = recipeRepository.findByIdWithIngredients(recipeId) ?: return emptyList()
         return recipe.ingredients
     }
 
-    suspend fun createRecipe(request: CreateRecipeRequest): CreateRecipeResponse {
+    fun createRecipe(request: CreateRecipeRequest): CreateRecipeResponse {
         // validate
         val errors = mutableListOf<String>()
 
@@ -91,7 +91,7 @@ class RecipeService(
 
         val invalidProductIds = productIds.filter { it !in existingProductIds }
         if (invalidProductIds.isNotEmpty()) {
-            errors.add("Invalid product IDs: ${invalidProductIds.joinToString(", ")}")
+            errors.add("Invalid product IDs: "+ invalidProductIds.joinToString(", "))
         }
 
         // Check for duplicate ingredients in request
@@ -99,13 +99,13 @@ class RecipeService(
             .filter { it.value.size > 1 }
             .keys
         if (duplicateProductIds.isNotEmpty()) {
-            errors.add("Duplicate ingredients found: ${duplicateProductIds.joinToString(", ")}")
+            errors.add("Duplicate ingredients found: "+ duplicateProductIds.joinToString(", "))
         }
 
         // Validate quantities
         request.ingredients.forEach { ingredient ->
             if (ingredient.quantity <= 0) {
-                errors.add("Quantity must be positive for product ID ${ingredient.productId}")
+                errors.add("Quantity must be positive for product ID "+ ingredient.productId)
             }
         }
 
