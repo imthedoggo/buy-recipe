@@ -10,9 +10,3 @@ interface RecipeRepository {
     // POST recipe
     suspend fun save(recipe: Recipe): Recipe
 }
-
-//    suspend fun findByCategory(category: String): List<Recipe>
-//    suspend fun findByIdWithIngredients(id: Int): Recipe?
-    //    suspend fun search(query: String): List<Recipe>
-//suspend fun countAll(tags: List<String>? = null, searchQuery: String? = null): Int
-

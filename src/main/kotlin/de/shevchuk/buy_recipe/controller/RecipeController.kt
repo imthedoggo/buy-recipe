@@ -1,6 +1,7 @@
 package de.shevchuk.buy_recipe.controller
 
 import de.shevchuk.buy_recipe.*
+import de.shevchuk.buy_recipe.dto.RecipeDetailResponse
 import de.shevchuk.buy_recipe.dto.RecipeListResponse
 import de.shevchuk.buy_recipe.service.RecipeService
 import org.springframework.http.ResponseEntity

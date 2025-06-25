@@ -8,14 +8,11 @@ import de.shevchuk.buy_recipe.service.ShoppingCartService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-//4. - DELETE /carts/:id/recipes/:id
-//-> Removes a recipe from a cart
 @RestController
 @RequestMapping("/api/carts")
 class ShoppingCartController(
     private val cartService: ShoppingCartService
 ) {
-
     @GetMapping("/{id}")
     suspend fun getCart(@PathVariable id: Long): ResponseEntity<ShoppingCart> {
         val cart = cartService.getCart(id)
@@ -36,5 +33,4 @@ class ShoppingCartController(
     suspend fun deleteRecipeFromCart(@RequestBody request: RemoveRecipeFromCartRequest): RemoveRecipeFromCartResponse {
         return cartService.removeRecipeFromCart(request)
     }
-
 }
