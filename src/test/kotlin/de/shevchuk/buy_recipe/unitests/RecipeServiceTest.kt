@@ -4,14 +4,11 @@ import de.shevchuk.buy_recipe.dto.*
 import de.shevchuk.buy_recipe.model.ProductRepository
 import de.shevchuk.buy_recipe.model.RecipeRepository
 import de.shevchuk.buy_recipe.service.RecipeService
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
-//import org.mockito.kotlin.any
-//import org.mockito.kotlin.mock
-//import org.mockito.kotlin.whenever
-//import kotlinx.coroutines.runBlocking
 
 class RecipeServiceTest {
     private lateinit var recipeRepository: RecipeRepository
@@ -26,11 +23,14 @@ class RecipeServiceTest {
     }
 
     @Test
-    fun `getRecipes returns paginated recipes`() = runBlocking {
+    fun `getRecipes returns paginated recipes`(): Unit = runBlocking {
         val recipe = Recipe(1, "Test", listOf(Tag.VEGAN), emptyList())
-        whenever(recipeRepository.findAll(any(), any(), any())).thenReturn(listOf(recipe))
-        whenever(recipeRepository.countAll()).thenReturn(1)
-        whenever(recipeRepository.findByIdWithIngredients(1)).thenReturn(recipe)
+
+        runBlocking {
+            whenever(recipeRepository.findAll(any(), any(), any())).doReturn(listOf(recipe))
+            whenever(recipeRepository.countAll()).doReturn(1)
+            whenever(recipeRepository.findByIdWithIngredients(1)).doReturn(recipe)
+        }
 
         val result = recipeService.getRecipes()
         assertEquals(1, result.totalCount)
@@ -39,11 +39,14 @@ class RecipeServiceTest {
     }
 
     @Test
-    fun `getRecipeDetail returns details if found`() = runBlocking {
+    fun `getRecipeDetail returns details if found`(): Unit = runBlocking {
         val product = Product(1, "Apple", 100, listOf(Tag.VEGAN))
         val ingredient = RecipeIngredient(product, 2)
         val recipe = Recipe(1, "Test", listOf(Tag.VEGAN), listOf(ingredient))
-        whenever(recipeRepository.findByIdWithIngredients(1)).thenReturn(recipe)
+
+        runBlocking {
+            whenever(recipeRepository.findByIdWithIngredients(1)).doReturn(recipe)
+        }
 
         val result = recipeService.getRecipeDetail(1)
         assertNotNull(result)
@@ -53,10 +56,14 @@ class RecipeServiceTest {
     }
 
     @Test
-    fun `createRecipe returns error for duplicate name`() = runBlocking {
+    fun `createRecipe returns error for duplicate name`(): Unit = runBlocking {
         val request = CreateRecipeRequest("Test", listOf(Tag.VEGAN), listOf(CreateRecipeIngredient(1, 2)))
-        whenever(recipeRepository.existsByName("Test")).thenReturn(true)
-        whenever(productRepository.findByIds(any())).thenReturn(listOf(Product(1, "Apple", 100, listOf(Tag.VEGAN))))
+        val product = Product(1, "Apple", 100, listOf(Tag.VEGAN))
+
+        runBlocking {
+            whenever(recipeRepository.existsByName("Test")).doReturn(true)
+            whenever(productRepository.findByIds(any())).doReturn(listOf(product))
+        }
 
         val result = recipeService.createRecipe(request)
         assertFalse(result.success)

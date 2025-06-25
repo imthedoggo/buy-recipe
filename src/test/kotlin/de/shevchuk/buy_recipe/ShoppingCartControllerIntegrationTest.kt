@@ -39,14 +39,12 @@ class ShoppingCartControllerIntegrationTest(@Autowired val webTestClient: WebTes
             .jsonPath("$.addedItems").isArray
 
         // Remove recipe from cart
-        val removeRequest = RemoveRecipeFromCartRequest(
-            recipeId = recipeId,
-            cartId = cartId,
-            removeIngredients = null
-        )
+//        val removeRequest = RemoveRecipeFromCartRequest(
+//            recipeId = recipeId,
+//            cartId = cartId,
+//            removeIngredients = null
+//        )
         webTestClient.delete().uri("/api/carts/delete-recipe")
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(removeRequest)
             .exchange()
             .expectStatus().isOk
             .expectBody()

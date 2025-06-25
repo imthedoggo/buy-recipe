@@ -9,8 +9,9 @@ import de.shevchuk.buy_recipe.service.ShoppingCartService
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.*
 import kotlinx.coroutines.runBlocking
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.mock
 
 class ShoppingCartServiceTest {
     private lateinit var cartRepository: ShoppingCartRepository
