@@ -9,6 +9,7 @@ create and fetch superheroes and create new attributes (e.g new powers...).
 ## Tech stack:
 * Kotlin
 * Spring 3
+* RESTful endpoints 
 * Docker to build image & run the project from anywhere
 * Docker-compose to start the DB
 * Postgres as a relational DB
@@ -24,8 +25,17 @@ create and fetch superheroes and create new attributes (e.g new powers...).
 * add a recipe to cart content
 * delete a recipe from a cart
 
+### What is implemented:
+An API layer that supports:
+* list recipes with pagination
+* view ingredients and costs
+* add recipes to cart
+* create new recipes
+
+![model_relationships.png](model_relationships.png)
+
 ### Current limitations:
-*
+* 
 *
 
 ### Future improvements:
@@ -37,6 +47,8 @@ create and fetch superheroes and create new attributes (e.g new powers...).
 * Add nutritional info to the products and a better tagging/classification system
 
 #### Technical
+* Add OpenAPI spec to document the endpoints
+* Implement error handling with consistent error objects (consider JSON API spec as reference)
 * Count inventory - after every buy, remove amount of available product
 * Introduce a robust pricing type, for example a Price type (BigDecimal, Currency)
 * Add an API rate limit for security reasons
