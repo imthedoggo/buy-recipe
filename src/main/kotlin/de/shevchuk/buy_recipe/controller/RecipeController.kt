@@ -27,10 +27,9 @@ class RecipeController(
     @GetMapping
     fun getRecipes(
         @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "20") pageSize: Int,
-        @RequestParam(required = false) tags: List<String>?,
+        @RequestParam(defaultValue = "20") pageSize: Int
     ): RecipeListResponse {
-        return recipeService.getRecipes(page, pageSize, tags)
+        return recipeService.getRecipes(page, pageSize)
     }
 
     @PostMapping

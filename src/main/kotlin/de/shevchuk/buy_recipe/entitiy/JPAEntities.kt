@@ -11,10 +11,7 @@ data class RecipeEntity(
     val id: Long = 0,
 
     @Column(nullable = false, unique = true)
-    val name: String,
-
-    @Column(columnDefinition = "jsonb")
-    val tags: List<String> = emptyList()
+    val name: String
 )
 
 @Entity
@@ -28,10 +25,7 @@ data class ProductEntity(
     val name: String,
 
     @Column(name = "price_in_cents", nullable = false)
-    val priceInCents: Int,
-
-    @Column(columnDefinition = "jsonb")
-    val tags: List<String> = emptyList()
+    val priceInCents: Int
 )
 
 @Entity

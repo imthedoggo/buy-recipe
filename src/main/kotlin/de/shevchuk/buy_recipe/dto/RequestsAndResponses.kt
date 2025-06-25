@@ -10,7 +10,6 @@ data class RecipeListResponse(
 data class RecipeSummary(
     val id: Long,
     val name: String,
-    val tags: List<Tag>,
     val ingredientCount: Int,
     val estimatedCostInCents: Int
 )
@@ -18,7 +17,6 @@ data class RecipeSummary(
 data class RecipeDetailResponse(
     val id: Long,
     val name: String,
-    val tags: List<Tag>,
     val ingredients: List<RecipeIngredientDetail>,
     val totalCostInCents: Int
 )
@@ -74,7 +72,6 @@ data class CartItemRemoved(
 
 data class CreateRecipeRequest(
     val name: String,
-    val tags: List<Tag>,
     val ingredients: List<CreateRecipeIngredient>
 )
 

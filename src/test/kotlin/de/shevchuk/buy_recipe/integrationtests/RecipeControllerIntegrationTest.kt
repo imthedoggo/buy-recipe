@@ -2,7 +2,6 @@ package de.shevchuk.buy_recipe.integrationtests
 
 import de.shevchuk.buy_recipe.dto.CreateRecipeIngredient
 import de.shevchuk.buy_recipe.dto.CreateRecipeRequest
-import de.shevchuk.buy_recipe.dto.Tag
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -25,7 +24,6 @@ class RecipeControllerIntegrationTest(
     fun `create and get recipe`() {
         val createRequest = CreateRecipeRequest(
             name = "Test Recipe",
-            tags = listOf(Tag.VEGAN),
             ingredients = listOf(CreateRecipeIngredient(productId = 1, quantity = 2))
         )
 

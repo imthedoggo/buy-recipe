@@ -40,7 +40,7 @@ class ShoppingCartServiceTest {
 
     @Test
     fun `addRecipeToCart returns error if cart not found`() {
-        val recipeDetail = RecipeDetailResponse(1, "Test", emptyList(), emptyList(), 0)
+        val recipeDetail = RecipeDetailResponse(1, "Test", emptyList(), 0)
         whenever(recipeService.getRecipeDetail(any())).thenReturn(recipeDetail)
         whenever(cartRepository.findById(any())).thenReturn(null)
         val request = AddRecipeToCartRequest(1, 1)
@@ -69,7 +69,7 @@ class ShoppingCartServiceTest {
 
     @Test
     fun `removeRecipeFromCart returns error if cart not found`() {
-        val recipeDetail = RecipeDetailResponse(1, "Test", emptyList(), emptyList(), 0)
+        val recipeDetail = RecipeDetailResponse(1, "Test", emptyList(), 0)
         whenever(recipeService.getRecipeDetail(any())).thenReturn(recipeDetail)
         whenever(cartRepository.findById(any())).thenReturn(null)
         val request = RemoveRecipeFromCartRequest(1, 1)

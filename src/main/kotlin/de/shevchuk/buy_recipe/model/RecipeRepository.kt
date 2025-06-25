@@ -29,16 +29,10 @@ open class RecipeRepository(
         return toRecipe(entity)
     }
 
-    // GET all recipes with pagination and optional tags filter
-    fun findAll(page: Int, size: Int, tags: List<String>? = null): List<Recipe> {
+    // GET all recipes with pagination
+    fun findAll(page: Int, size: Int): List<Recipe> {
         val pageRequest = PageRequest.of(page, size)
-        val entities = if (tags.isNullOrEmpty()) {
-            recipeJpaRepository.findAll(pageRequest).content
-        } else {
-            // Filter in-memory for now, or implement a custom query if needed
-            recipeJpaRepository.findAll().filter { it.tags.any { tag -> tags.contains(tag) } }
-                .drop(page * size).take(size)
-        }
+        val entities = recipeJpaRepository.findAll(pageRequest).content
         return entities.map { toRecipe(it) }
     }
 
@@ -52,11 +46,9 @@ open class RecipeRepository(
     fun save(recipe: Recipe): Recipe {
         val entity = RecipeEntity(
             id = recipe.id,
-            name = recipe.name,
-            tags = recipe.tags.map { it.name }
+            name = recipe.name
         )
         val saved = recipeJpaRepository.save(entity)
-        // Ingredients saving logic would go here if needed
         return toRecipe(saved, withIngredients = true)
     }
 
@@ -64,9 +56,6 @@ open class RecipeRepository(
 
     // Helper to map RecipeEntity to Recipe DTO
     private fun toRecipe(entity: RecipeEntity, withIngredients: Boolean = false): Recipe {
-        val tags = entity.tags.mapNotNull { tagStr ->
-            try { Tag.valueOf(tagStr) } catch (_: Exception) { null }
-        }
         val ingredients = if (withIngredients) {
             val recipeProducts = recipeProductJpaRepository.findByIdRecipeId(entity.id)
             recipeProducts.mapNotNull { rp ->
@@ -77,20 +66,15 @@ open class RecipeRepository(
         return Recipe(
             id = entity.id,
             name = entity.name,
-            tags = tags,
             ingredients = ingredients
         )
     }
 
     fun addRecipe(request: CreateRecipeRequest): Recipe {
-        // Save the recipe entity first (id will be generated)
         val recipeEntity = RecipeEntity(
-            name = request.name,
-            tags = request.tags.map { it.name }
+            name = request.name
         )
         val savedRecipe = recipeJpaRepository.save(recipeEntity)
-
-        // Save ingredients in the join table
         request.ingredients.forEach { ingredient ->
             val recipeProduct = RecipeProductEntity(
                 recipeId = savedRecipe.id,
@@ -99,8 +83,6 @@ open class RecipeRepository(
             )
             recipeProductJpaRepository.save(recipeProduct)
         }
-
-        // Return the full recipe with ingredients
         return toRecipe(savedRecipe, withIngredients = true)
     }
 }

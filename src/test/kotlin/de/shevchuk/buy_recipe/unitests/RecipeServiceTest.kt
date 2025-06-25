@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.whenever
 
 class RecipeServiceTest {
@@ -26,9 +25,9 @@ class RecipeServiceTest {
 
     @Test
     fun `getRecipes returns paginated recipes`() {
-        val recipe = Recipe(1, "Test", listOf(Tag.VEGAN), emptyList())
+        val recipe = Recipe(1, "Test", emptyList())
 
-        whenever(recipeRepository.findAll(any(), any(), any())).thenReturn(listOf(recipe))
+        whenever(recipeRepository.findAll(any(), any())).thenReturn(listOf(recipe))
         whenever(recipeRepository.countAll()).thenReturn(1)
         whenever(recipeRepository.findByIdWithIngredients(1)).thenReturn(recipe)
 
@@ -40,9 +39,9 @@ class RecipeServiceTest {
 
     @Test
     fun `getRecipeDetail returns details if found`() {
-        val product = Product(1, "Apple", 100, listOf(Tag.VEGAN))
+        val product = Product(1, "Apple", 100)
         val ingredient = RecipeIngredient(product, 2)
-        val recipe = Recipe(1, "Test", listOf(Tag.VEGAN), listOf(ingredient))
+        val recipe = Recipe(1, "Test", listOf(ingredient))
 
         whenever(recipeRepository.findByIdWithIngredients(1)).thenReturn(recipe)
 
@@ -55,8 +54,8 @@ class RecipeServiceTest {
 
     @Test
     fun `createRecipe returns error for duplicate name`() {
-        val request = CreateRecipeRequest("Test", listOf(Tag.VEGAN), listOf(CreateRecipeIngredient(1, 2)))
-        val product = Product(1, "Apple", 100, listOf(Tag.VEGAN))
+        val request = CreateRecipeRequest("Test", listOf(CreateRecipeIngredient(1, 2)))
+        val product = Product(1, "Apple", 100)
 
         whenever(recipeRepository.existsByName("Test")).thenReturn(true)
         whenever(productRepository.findByIds(any())).thenReturn(listOf(product))
@@ -68,14 +67,13 @@ class RecipeServiceTest {
 
     @Test
     fun `createRecipe returns success for valid request`() {
-        val request = CreateRecipeRequest("Test", listOf(Tag.VEGAN), listOf(CreateRecipeIngredient(1, 2)))
-        val product = Product(1, "Apple", 100, listOf(Tag.VEGAN))
+        val request = CreateRecipeRequest("Test", listOf(CreateRecipeIngredient(1, 2)))
+        val product = Product(1, "Apple", 100)
         val ingredient = RecipeIngredient(product, 2)
-        val recipe = Recipe(1, "Test", listOf(Tag.VEGAN), listOf(ingredient))
+        val recipe = Recipe(1, "Test", listOf(ingredient))
         val recipeDetail = RecipeDetailResponse(
             id = 1,
             name = "Test",
-            tags = listOf(Tag.VEGAN),
             ingredients = listOf(RecipeIngredientDetail(1, "Apple", 2, 100, 200)),
             totalCostInCents = 200
         )

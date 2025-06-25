@@ -10,147 +10,122 @@
         <insert tableName="products">
             <column name="name" value="Chicken Breast"/>
             <column name="price_in_cents" value="599"/>
-            <column name="tags" value='["protein", "meat", "poultry"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Ground Beef"/>
             <column name="price_in_cents" value="899"/>
-            <column name="tags" value='["protein", "meat", "beef"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Salmon Fillet"/>
             <column name="price_in_cents" value="1299"/>
-            <column name="tags" value='["protein", "fish", "seafood", "omega-3"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Eggs"/>
             <column name="price_in_cents" value="349"/>
-            <column name="tags" value='["protein", "dairy", "breakfast"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Whole Milk"/>
             <column name="price_in_cents" value="289"/>
-            <column name="tags" value='["dairy", "beverage", "calcium"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Cheddar Cheese"/>
             <column name="price_in_cents" value="449"/>
-            <column name="tags" value='["dairy", "cheese", "protein"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="White Rice"/>
             <column name="price_in_cents" value="199"/>
-            <column name="tags" value='["grain", "carbohydrate", "staple"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Pasta"/>
             <column name="price_in_cents" value="149"/>
-            <column name="tags" value='["grain", "carbohydrate", "italian"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Bread"/>
             <column name="price_in_cents" value="229"/>
-            <column name="tags" value='["grain", "carbohydrate", "breakfast"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Onion"/>
             <column name="price_in_cents" value="89"/>
-            <column name="tags" value='["vegetable", "aromatic", "cooking-base"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Garlic"/>
             <column name="price_in_cents" value="49"/>
-            <column name="tags" value='["vegetable", "aromatic", "seasoning"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Tomatoes"/>
             <column name="price_in_cents" value="199"/>
-            <column name="tags" value='["vegetable", "fruit", "lycopene"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Bell Peppers"/>
             <column name="price_in_cents" value="159"/>
-            <column name="tags" value='["vegetable", "vitamin-c", "colorful"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Carrots"/>
             <column name="price_in_cents" value="119"/>
-            <column name="tags" value='["vegetable", "root", "vitamin-a"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Potatoes"/>
             <column name="price_in_cents" value="179"/>
-            <column name="tags" value='["vegetable", "root", "starch"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Olive Oil"/>
             <column name="price_in_cents" value="799"/>
-            <column name="tags" value='["oil", "fat", "mediterranean", "cooking"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Salt"/>
             <column name="price_in_cents" value="99"/>
-            <column name="tags" value='["seasoning", "mineral", "essential"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Black Pepper"/>
             <column name="price_in_cents" value="199"/>
-            <column name="tags" value='["spice", "seasoning", "peppery"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Butter"/>
             <column name="price_in_cents" value="399"/>
-            <column name="tags" value='["dairy", "fat", "cooking", "baking"]'/>
         </insert>
 
         <insert tableName="products">
             <column name="name" value="Fresh Herbs"/>
             <column name="price_in_cents" value="249"/>
-            <column name="tags" value='["herbs", "seasoning", "fresh", "aromatic"]'/>
         </insert>
 
         <!-- Insert 5 recipes -->
         <insert tableName="recipes">
             <column name="name" value="Grilled Chicken with Vegetables"/>
-            <column name="tags" value='["healthy", "protein", "grilled", "low-carb"]'/>
         </insert>
 
         <insert tableName="recipes">
             <column name="name" value="Beef Pasta Bolognese"/>
-            <column name="tags" value='["italian", "pasta", "comfort-food", "hearty"]'/>
         </insert>
 
         <insert tableName="recipes">
             <column name="name" value="Baked Salmon with Rice"/>
-            <column name="tags" value='["healthy", "fish", "baked", "omega-3"]'/>
         </insert>
 
         <insert tableName="recipes">
             <column name="name" value="Scrambled Eggs with Toast"/>
-            <column name="tags" value='["breakfast", "quick", "eggs", "simple"]'/>
         </insert>
 
         <insert tableName="recipes">
             <column name="name" value="Roasted Potato Medley"/>
-            <column name="tags" value='["vegetarian", "side-dish", "roasted", "comfort-food"]'/>
         </insert>
 
         <!-- Recipe ingredients for Grilled Chicken with Vegetables (recipe_id: 1) -->

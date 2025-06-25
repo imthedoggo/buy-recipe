@@ -1,7 +1,6 @@
 package de.shevchuk.buy_recipe.model
 
 import de.shevchuk.buy_recipe.dto.Product
-import de.shevchuk.buy_recipe.dto.Tag
 import de.shevchuk.buy_recipe.entitiy.ProductEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
@@ -25,14 +24,10 @@ open class ProductRepository(
     }
 
     private fun toProduct(entity: ProductEntity): Product {
-        val tags = entity.tags.mapNotNull { tagStr ->
-            try { Tag.valueOf(tagStr) } catch (_: Exception) { null }
-        }
         return Product(
             id = entity.id,
             name = entity.name,
-            priceInCents = entity.priceInCents,
-            tags = tags
+            priceInCents = entity.priceInCents
         )
     }
 }

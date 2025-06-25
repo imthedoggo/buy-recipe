@@ -12,10 +12,9 @@ class RecipeService(
 ) {
     fun getRecipes(
         page: Int = 0,
-        pageSize: Int = 20,
-        tags: List<String>? = null
+        pageSize: Int = 20
     ): RecipeListResponse {
-        val recipes = recipeRepository.findAll(page, pageSize, tags)
+        val recipes = recipeRepository.findAll(page, pageSize)
         val totalCount = recipeRepository.countAll()
 
         val recipeSummaries = recipes.map { recipe ->
@@ -23,7 +22,6 @@ class RecipeService(
             RecipeSummary(
                 id = recipe.id,
                 name = recipe.name,
-                tags = recipe.tags,
                 ingredientCount = ingredients.size,
                 estimatedCostInCents = ingredients.sumOf { it.product.priceInCents * it.quantity }
             )
@@ -53,7 +51,6 @@ class RecipeService(
         return RecipeDetailResponse(
             id = recipe.id,
             name = recipe.name,
-            tags = recipe.tags,
             ingredients = ingredientDetails,
             totalCostInCents = ingredientDetails.sumOf { it.totalPriceInCents }
         )
