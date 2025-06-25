@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5438/buy_recipe
+    username: postgres
+    password: password
