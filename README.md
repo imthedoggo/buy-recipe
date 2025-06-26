@@ -34,7 +34,7 @@ An API layer that supports:
 * create new recipes
 * A list of products and recipe_products is migrated onto the DB for testing purposes.
 
-![model_relationships.png](model_relationships.png)
+![model_schema.png](model_schema.png)
 
 ### Future improvements:
 
@@ -42,11 +42,13 @@ An API layer that supports:
 * Set up and manage application users, with authentication (e.g. access with JWT token) and authorization, to access their cart only
 * Sophisticated mapping of products-ingredients, in terms of quantity (units os measure, optimize how much to buy)
 * Sophisticated mapping of products-ingredients, in terms of priority (which products to buy for the same ingredient)
+* Add tagging of products and recipes (e.g. vegan, keto) for an improved filtering functionality
 * Add nutritional info to the products and a better tagging/classification system
 
 #### Technical
 * Add OpenAPI spec to document the endpoints
 * Implement error handling with consistent error objects (consider JSON API spec as reference)
+* Support non-blocking suspended functions for I/O operations
 * Count inventory - after every buy, remove amount of available product
 * Introduce a robust pricing type, for example a Price type (BigDecimal, Currency)
 * Add an API rate limit for security reasons
@@ -234,38 +236,55 @@ Response (validation error):
 Response:
 ```
 {
-  "id": 1,
-  "totalInCents": 500,
-  "items": [
-    {
-      "id": 1,
-      "cartId": 1,
-      "productId": 1,
-      "quantity": 1,
-      "product": {
-        "id": 1,
-        "name": "Lettuce",
-        "priceInCents": 200,
-        "tags": ["VEGAN"]
-      }
-    },
-    {
-      "id": 2,
-      "cartId": 1,
-      "productId": 2,
-      "quantity": 2,
-      "product": {
-        "id": 2,
-        "name": "Tomato",
-        "priceInCents": 150,
-        "tags": ["VEGAN"]
-      }
-    }
-  ]
+	"id": 1,
+	"totalInCents": 2146,
+	"items": [
+		{
+			"id": 1,
+			"cartId": 1,
+			"productId": 1,
+			"quantity": 2,
+			"product": {
+				"id": 1,
+				"name": "Chicken Breast",
+				"priceInCents": 599
+			}
+		},
+		{
+			"id": 2,
+			"cartId": 1,
+			"productId": 8,
+			"quantity": 1,
+			"product": {
+				"id": 8,
+				"name": "Pasta",
+				"priceInCents": 149
+			}
+		},
+		{
+			"id": 3,
+			"cartId": 1,
+			"productId": 16,
+			"quantity": 1,
+			"product": {
+				"id": 16,
+				"name": "Olive Oil",
+				"priceInCents": 799
+			}
+		}
+	]
+}
+```
+Response (empty cart)
+```
+{
+	"id": 2,
+	"totalInCents": 0,
+	"items": []
 }
 ```
 
-#### POST /api/carts/1/add-recipe
+#### POST /api/carts/3/add-recipe
 Request:
 ```
 {
@@ -276,23 +295,41 @@ Request:
 Response:
 ```
 {
-  "success": true,
-  "addedItems": [
-    {
-      "productId": 1,
-      "productName": "Lettuce",
-      "quantityAdded": 1,
-      "isNewItem": true
-    },
-    {
-      "productId": 2,
-      "productName": "Tomato",
-      "quantityAdded": 2,
-      "isNewItem": true
-    }
-  ],
-  "updatedCartTotal": 500,
-  "message": "Recipe added to cart"
+	"success": true,
+	"addedItems": [
+		{
+			"productId": 1,
+			"productName": "Chicken Breast",
+			"quantityAdded": 2,
+			"isNewItem": true
+		},
+		{
+			"productId": 13,
+			"productName": "Bell Peppers",
+			"quantityAdded": 2,
+			"isNewItem": true
+		},
+		{
+			"productId": 16,
+			"productName": "Olive Oil",
+			"quantityAdded": 1,
+			"isNewItem": true
+		},
+		{
+			"productId": 17,
+			"productName": "Salt",
+			"quantityAdded": 1,
+			"isNewItem": true
+		},
+		{
+			"productId": 18,
+			"productName": "Black Pepper",
+			"quantityAdded": 1,
+			"isNewItem": true
+		}
+	],
+	"updatedCartTotal": 2613,
+	"message": "Recipe ingredients added to cart successfully"
 }
 ```
 Response (cart not found):

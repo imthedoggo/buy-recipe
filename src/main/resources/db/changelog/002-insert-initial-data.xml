@@ -277,5 +277,37 @@
             <column name="product_id" value="20"/>  <!-- Fresh Herbs -->
             <column name="quantity" value="1"/>
         </insert>
+
+        <!-- Insert 3 carts -->
+        <insert tableName="carts">
+            <column name="total_in_cents" value="2146"/>
+        </insert>
+
+        <insert tableName="carts">
+            <column name="total_in_cents" value="0"/>
+        </insert>
+
+        <insert tableName="carts">
+            <column name="total_in_cents" value="0"/>
+        </insert>
+
+        <!-- Cart items for cart 1 -->
+        <insert tableName="cart_items">
+            <column name="cart_id" value="1"/>
+            <column name="product_id" value="1"/>  <!-- Chicken Breast - $5.99 -->
+            <column name="quantity" value="2"/>
+        </insert>
+
+        <insert tableName="cart_items">
+            <column name="cart_id" value="1"/>
+            <column name="product_id" value="8"/>  <!-- Pasta - $1.49 -->
+            <column name="quantity" value="1"/>
+        </insert>
+
+        <insert tableName="cart_items">
+            <column name="cart_id" value="1"/>
+            <column name="product_id" value="16"/>  <!-- Olive Oil - $7.99 -->
+            <column name="quantity" value="1"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>
