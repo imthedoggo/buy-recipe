@@ -346,31 +346,59 @@ Response (cart not found):
 Request:
 ```
 {
-  "recipeId": 1,
-  "cartId": 1
+  "recipeId": 2,
+  "cartId": 3
 }
 ```
 Response:
 ```
 {
-  "success": true,
-  "removedItems": [
-    {
-      "productId": 1,
-      "productName": "Lettuce",
-      "quantityRemoved": 1,
-      "remainingQuantity": 0,
-      "itemCompletelyRemoved": true
-    },
-    {
-      "productId": 2,
-      "productName": "Tomato",
-      "quantityRemoved": 2,
-      "remainingQuantity": 0,
-      "itemCompletelyRemoved": true
-    }
-  ],
-  "updatedCartTotal": 0,
-  "message": "Recipe removed from cart"
+	"success": true,
+	"removedItems": [
+		{
+			"productId": 2,
+			"productName": "Ground Beef",
+			"quantityRemoved": 1,
+			"remainingQuantity": 0,
+			"itemCompletelyRemoved": true
+		},
+		{
+			"productId": 8,
+			"productName": "Pasta",
+			"quantityRemoved": 1,
+			"remainingQuantity": 0,
+			"itemCompletelyRemoved": true
+		},
+		{
+			"productId": 10,
+			"productName": "Onion",
+			"quantityRemoved": 1,
+			"remainingQuantity": 0,
+			"itemCompletelyRemoved": true
+		},
+		{
+			"productId": 11,
+			"productName": "Garlic",
+			"quantityRemoved": 3,
+			"remainingQuantity": 0,
+			"itemCompletelyRemoved": true
+		},
+		{
+			"productId": 12,
+			"productName": "Tomatoes",
+			"quantityRemoved": 4,
+			"remainingQuantity": 0,
+			"itemCompletelyRemoved": true
+		},
+		{
+			"productId": 16,
+			"productName": "Olive Oil",
+			"quantityRemoved": 1,
+			"remainingQuantity": 2,
+			"itemCompletelyRemoved": false
+		}
+	],
+	"updatedCartTotal": 5226,
+	"message": "Recipe ingredients removed from cart successfully"
 }
 ```
