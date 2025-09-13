@@ -21,22 +21,12 @@ class ShoppingCartController(
     }
 
     @PostMapping("/{id}/add-recipe")
-    fun addRecipeToCart(@RequestBody request: AddRecipeToCartRequest): ResponseEntity<AddRecipeToCartResponse> {
-        val response = cartService.addRecipeToCart(request)
-        return if (response.success) {
-            ResponseEntity.status(201).body(response)
-        } else {
-            ResponseEntity.status(404).body(response)
-        }
+    fun addRecipeToCart(@RequestBody request: AddRecipeToCartRequest): AddRecipeToCartResponse {
+        return cartService.addRecipeToCart(request)
     }
 
     @DeleteMapping("/delete-recipe")
-    fun deleteRecipeFromCart(@RequestBody request: RemoveRecipeFromCartRequest): ResponseEntity<RemoveRecipeFromCartResponse> {
-        val response = cartService.removeRecipeFromCart(request)
-        return if (response.success) {
-            ResponseEntity.status(200).body(response)
-        } else {
-            ResponseEntity.status(404).body(response)
-        }
+    fun deleteRecipeFromCart(@RequestBody request: RemoveRecipeFromCartRequest): RemoveRecipeFromCartResponse {
+        return cartService.removeRecipeFromCart(request)
     }
 }
